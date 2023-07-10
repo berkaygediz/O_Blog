@@ -201,7 +201,8 @@
         ?>
     </main>
     <footer>
-        <p style="color: white; font-weight: bold;">O Blog &copy; 2023 - Berkay Gediz - <a href="https://github.com/berkaygediz">GitHub</a> </p>
+        <p style="color: white; font-weight: bold;">O Blog &copy; 2023 - Berkay Gediz - <a
+                href="https://github.com/berkaygediz">GitHub</a> </p>
     </footer>
 </body>
 
