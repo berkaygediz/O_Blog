@@ -2,7 +2,7 @@
 <html lang="tr">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> 
     <?php
     session_start();
     include("baglanti.php");
