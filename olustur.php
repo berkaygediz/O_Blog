@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yazını Oluştur | O Blog</title>
-    <?php include("baglanti.php"); ?>
+    <?php include("connect.php"); ?>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
     <style>
         body {
@@ -125,24 +125,19 @@
         <div style="display: flex; align-items: center; width:50%;">
             <?php
             session_start();
-
-            if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-                echo "<div style='margin-left:10vh;margin-right:2vh;justify-content: space-between;'><a href='index.php' class='nav-eleman-kontrol'>Keşfet</a><a href='yazarlar.php' class='nav-eleman-kontrol'>Yazarlar</a><a href='yazilarim.php' class='nav-eleman-kontrol'>Yazılarım</a> <a href='yorumlarim.php' class='nav-eleman-kontrol'>Yorumlarım</a></div>";
-                echo "| <div style='margin-left:2vh;'> Hoşgeldiniz, <a href='profil.php?kullaniciadi=" . $_SESSION["kullaniciadi"] . "'>" . $_SESSION["kullaniciadi"] . "</a><a href='cikis.php' class='nav-eleman-kontrol'>Çıkış</a>";
-            } else {
-                echo "<div style='margin-left:40vh;margin-right:2vh;justify-content: space-between;'><a href='giris.php' class='nav-eleman-kontrol'>Giriş Yap</a> | <a href='kayit.php' class='nav-eleman-kontrol'>Kayıt Ol</a></div>";
-            }
+            include("nav.php");
             ?>
         </div>
     </header>
     <main>
         <?php
+        
         if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
             echo "<h1 style='background: -webkit-linear-gradient(#E8F6EF, #FFE194);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent; font-weight:bold;'>İçeriğini Oluştur</h1>";
 
-            $kategoriler = mysqli_query($baglanti, "SELECT * FROM kategori");
+            $kategoriler = mysqli_query($baglanti, "SELECT * FROM category");
 
             if (mysqli_num_rows($kategoriler) == 0) {
                 echo "<p style='color: yellow; font-weight:bold;'>HATA: Sitede bakım ve onarım yapılıyor.</p>";
@@ -155,7 +150,7 @@
                 echo "<b>Kategori:</b> <select name='yazikategori' style='width: 20%; padding: 1vh 1vh 1vh 1vh; border-radius: 1em; border: 1px solid white; background-color: #ECCDB4; color: black; font-weight: bold;'>";
                 echo "<option value='0'>Seçiniz</option>";
                 while ($kategori = mysqli_fetch_assoc($kategoriler)) {
-                    echo "<option value='" . $kategori["kategori"] . "'>" . $kategori["kategori"] . "</option>";
+                    echo "<option value='" . $kategori["category"] . "'>" . $kategori["category"] . "</option>";
                 }
                 echo "</select><br><br>";
                 echo "<input type='submit' value='Oluştur' style='cursor:pointer; color:white; margin-bottom: 10vh;' id='olustur'>";

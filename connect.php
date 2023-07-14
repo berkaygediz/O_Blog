@@ -2,7 +2,6 @@
 $host = "localhost";
 $kadi = "root";
 $veritabani = "o_blog";
-
 $baglanti = mysqli_connect($host, $kadi);
 if ($baglanti == true) {
 } else {

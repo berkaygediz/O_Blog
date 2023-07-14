@@ -2,10 +2,10 @@
 <html lang="tr">
 
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <?php
     session_start();
-    include("baglanti.php");
+    include("connect.php");
     ?>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,7 @@
     <?php
     if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
         $kullaniciid = $_SESSION["kullaniciid"];
-        $yazarbilgisor = mysqli_query($baglanti, "SELECT * FROM yazar WHERE id='$kullaniciid'");
+        $yazarbilgisor = mysqli_query($baglanti, "SELECT * FROM author WHERE id='$kullaniciid'");
         $yazarbilgicek = mysqli_fetch_assoc($yazarbilgisor);
         if ($yazarbilgicek["isadmin"] == 1) {
             echo "<h1>OCONOM Blog - Yönetim Paneli</h1>";
@@ -33,9 +33,9 @@
             echo "</form>";
 
             echo "<h1>Kategoriler</h1>";
-            $kategorisor = mysqli_query($baglanti, "SELECT * FROM kategori");
+            $kategorisor = mysqli_query($baglanti, "SELECT * FROM category");
             while ($kategoricek = mysqli_fetch_assoc($kategorisor)) {
-                echo $kategoricek["kategori"];
+                echo $kategoricek["category"];
                 echo " - <a href='kategorisilaction.php?kategoriid=" . $kategoricek["id"] . "'>Sil</a>";
                 echo "<br>";
             }

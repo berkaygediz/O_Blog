@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yazarlar | O Blog</title>
-    <?php include("baglanti.php"); ?>
+    <?php include("connect.php"); ?>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
     <style>
         body {
@@ -100,27 +100,21 @@
         <div style="display: flex; align-items: center; width:50%;">
             <?php
             session_start();
-
-            if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-                echo "<div style='margin-left:10vh;margin-right:2vh;justify-content: space-between;'><a href='index.php' class='nav-eleman-kontrol'>Keşfet</a><a href='yazarlar.php' class='nav-eleman-kontrol'>Yazarlar</a><a href='yazilarim.php' class='nav-eleman-kontrol'>Yazılarım</a> <a href='yorumlarim.php' class='nav-eleman-kontrol'>Yorumlarım</a></div>";
-                echo "| <div style='margin-left:2vh;'> Hoşgeldiniz, <a href='profil.php?kullaniciadi=" . $_SESSION["kullaniciadi"] . "'>" . $_SESSION["kullaniciadi"] . "</a><a href='cikis.php' class='nav-eleman-kontrol'>Çıkış</a>";
-            } else {
-                echo "<div style='margin-left:40vh;margin-right:2vh;justify-content: space-between;'><a href='giris.php' class='nav-eleman-kontrol'>Giriş Yap</a> | <a href='kayit.php' class='nav-eleman-kontrol'>Kayıt Ol</a></div>";
-            }
+            include("nav.php");
             ?>
         </div>
     </header>
     <main>
         <?php
         if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-            $yazarlar = mysqli_query($baglanti, "SELECT * FROM yazar ORDER BY kayitzamani DESC");
+            $yazarlar = mysqli_query($baglanti, "SELECT * FROM author ORDER BY regdate DESC");
             if (mysqli_num_rows($yazarlar) > 0) {
                 echo "<h1>Yazarlar</h1>";
                 echo "<table style='width:100%;'>";
                 echo "<tr> <th style='border: 2px solid black;'>Kullanıcı Adı</th> <th style='border: 2px solid black;'>Paylaşım Sayısı</th> <th style='border: 2px solid black;'>Kayıt Tarihi</th> </tr>";
                 while ($yazar = mysqli_fetch_assoc($yazarlar)) {
-                    $yaziveri = mysqli_query($baglanti, "SELECT * FROM yazi WHERE yazarid=" . $yazar["id"]);
-                    echo "<tr><td style='border: 2px solid aqua;'><a href='profil.php?kullaniciadi=" . $yazar["kullaniciadi"] . "'>" . $yazar["kullaniciadi"] . "</a></td><td style='border: 2px solid aqua;'>" . mysqli_num_rows($yaziveri) . "</td><td style='border: 2px solid aqua;'>" . $yazar["kayitzamani"] . "</td></tr>";
+                    $yaziveri = mysqli_query($baglanti, "SELECT * FROM post WHERE authorid=" . $yazar["id"]);
+                    echo "<tr><td style='border: 2px solid aqua;'><a href='profil.php?kullaniciadi=" . $yazar["username"] . "'>" . $yazar["username"] . "</a></td><td style='border: 2px solid aqua;'>" . mysqli_num_rows($yaziveri) . "</td><td style='border: 2px solid aqua;'>" . $yazar["regdate"] . "</td></tr>";
                 }
                 echo "</table>";
             } else {

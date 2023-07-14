@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php
     session_start();
-    include("baglanti.php");
+    include("connect.php");
     ?>
     <title>
         <?php echo $_GET["kullaniciadi"]; ?> | O Blog
@@ -167,12 +167,7 @@
         </div>
         <div style="display: flex; align-items: center; width:50%;">
             <?php
-            if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-                echo "<div style='margin-left:10vh;margin-right:2vh;justify-content: space-between;'><a href='index.php' class='nav-eleman-kontrol'>Keşfet</a><a href='yazarlar.php' class='nav-eleman-kontrol'>Yazarlar</a><a href='yazilarim.php' class='nav-eleman-kontrol'>Yazılarım</a> <a href='yorumlarim.php' class='nav-eleman-kontrol'>Yorumlarım</a></div>";
-                echo "| <div style='margin-left:2vh;'> Hoşgeldiniz, <a href='profil.php?kullaniciadi=" . $_SESSION["kullaniciadi"] . "'>" . $_SESSION["kullaniciadi"] . "</a><a href='cikis.php' class='nav-eleman-kontrol'>Çıkış</a>";
-            } else {
-                echo "<div style='margin-left:40vh;margin-right:2vh;justify-content: space-between;'><a href='giris.php' class='nav-eleman-kontrol'>Giriş Yap</a> | <a href='kayit.php' class='nav-eleman-kontrol'>Kayıt Ol</a></div>";
-            }
+            include("nav.php");
             ?>
         </div>
     </header>
@@ -182,10 +177,10 @@
             <div class="profile-item">
                 <?php
                 if (isset($_GET["kullaniciadi"])) {
-                    $yazar = mysqli_query($baglanti, "SELECT * FROM yazar WHERE kullaniciadi='" . $_GET["kullaniciadi"] . "'");
+                    $yazar = mysqli_query($baglanti, "SELECT * FROM author WHERE username='" . $_GET["kullaniciadi"] . "'");
                     if (mysqli_num_rows($yazar) > 0) {
                         while ($yazaroku = mysqli_fetch_assoc($yazar)) {
-                            echo $yazaroku["kullaniciadi"];
+                            echo $yazaroku["username"];
                         }
                     } else {
                         echo "Yazar bulunamadı.";
@@ -202,7 +197,7 @@
                 <div style="clear:both; padding-left:1%;padding-top: 1%; color: wheat;"><b>Paylaşım sayısı:</b>
                     <?php
                     if (isset($_GET["kullaniciadi"])) {
-                        $yazilar = mysqli_query($baglanti, "SELECT * FROM yazi INNER JOIN yazar ON yazi.yazarid=yazar.id WHERE yazar.kullaniciadi='" . $_GET["kullaniciadi"] . "'");
+                        $yazilar = mysqli_query($baglanti, "SELECT * FROM post INNER JOIN author ON post.authorid=author.id WHERE author.username='" . $_GET["kullaniciadi"] . "'");
                         if (mysqli_num_rows($yazilar) > 0) {
                             echo mysqli_num_rows($yazilar);
                         } else {
@@ -219,12 +214,12 @@
                 <h1>Yazılar</h1>
                 <?php
                 if (isset($_GET["kullaniciadi"])) {
-                    $yazilar = mysqli_query($baglanti, "SELECT * FROM yazar INNER JOIN yazi ON yazi.yazarid=yazar.id WHERE yazar.kullaniciadi='" . $_GET["kullaniciadi"] . "'");
+                    $yazilar = mysqli_query($baglanti, "SELECT * FROM author INNER JOIN post ON post.authorid=author.id WHERE author.username='" . $_GET["kullaniciadi"] . "'");
                     if (mysqli_num_rows($yazilar) > 0) {
                         echo "<table style='width:100%;'>";
                         echo "<tr><th>Başlık</th><th>Tarihi</th></tr>";
                         while ($yazi = mysqli_fetch_assoc($yazilar)) {
-                            echo "<tr style='color:white;'><td><a style='word-break:break-all;' href='yazi.php?id=" . $yazi["id"] . "'>" . $yazi["baslik"] . "</a></td><td>" . $yazi["tarih"] . "</td></tr>";
+                            echo "<tr style='color:white;'><td><a style='word-break:break-all;' href='yazi.php?id=" . $yazi["id"] . "'>" . $yazi["title"] . "</a></td><td>" . $yazi["date"] . "</td></tr>";
                         }
                         echo "</table>";
                     } else {
@@ -242,9 +237,9 @@
                 $kullaniciid = $_SESSION["kullaniciid"];
 
                 if (isset($_GET["hesapsil"])) {
-                    $yorumsil = mysqli_query($baglanti, "DELETE FROM yorum WHERE yazarid='$kullaniciid'");
-                    $yazisil = mysqli_query($baglanti, "DELETE FROM yazi WHERE yazarid='$kullaniciid'");
-                    $yazarsil = mysqli_query($baglanti, "DELETE FROM yazar WHERE id='$kullaniciid'");
+                    $yorumsil = mysqli_query($baglanti, "DELETE FROM comment WHERE authorid='$kullaniciid'");
+                    $yazisil = mysqli_query($baglanti, "DELETE FROM post WHERE authorid='$kullaniciid'");
+                    $yazarsil = mysqli_query($baglanti, "DELETE FROM author WHERE id='$kullaniciid'");
 
                     if ($yazisil && $yorumsil && $yazarsil) {
                         header("Location: cikis.php");

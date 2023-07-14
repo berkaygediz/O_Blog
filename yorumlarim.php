@@ -8,7 +8,7 @@
     <title>Yorumlarım | O Blog</title>
     <?php
     session_start();
-    include("baglanti.php");
+    include("connect.php");
     ?>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
     <style>
@@ -122,26 +122,21 @@
         </div>
         <div style="display: flex; align-items: center; width:50%;">
             <?php
-            if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-                echo "<div style='margin-left:10vh;margin-right:2vh;justify-content: space-between;'><a href='index.php' class='nav-eleman-kontrol'>Keşfet</a><a href='yazarlar.php' class='nav-eleman-kontrol'>Yazarlar</a><a href='yazilarim.php' class='nav-eleman-kontrol'>Yazılarım</a> <a href='yorumlarim.php' class='nav-eleman-kontrol'>Yorumlarım</a></div>";
-                echo "| <div style='margin-left:2vh;'> Hoşgeldiniz, <a href='profil.php?kullaniciadi=" . $_SESSION["kullaniciadi"] . "'>" . $_SESSION["kullaniciadi"] . "</a><a href='cikis.php' class='nav-eleman-kontrol'>Çıkış</a>";
-            } else {
-                echo "<div style='margin-left:40vh;margin-right:2vh;justify-content: space-between;'><a href='giris.php' class='nav-eleman-kontrol'>Giriş Yap</a> | <a href='kayit.php' class='nav-eleman-kontrol'>Kayıt Ol</a></div>";
-            }
+            include("nav.php");
             ?>
         </div>
     </header>
     <main>
         <?php
         if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-            $yorumlar = mysqli_query($baglanti, "SELECT * FROM yorum WHERE yazarid='" . $_SESSION["kullaniciid"] . "' ORDER BY tarih DESC");
+            $yorumlar = mysqli_query($baglanti, "SELECT * FROM comment WHERE authorid='" . $_SESSION["kullaniciid"] . "' ORDER BY date DESC");
             if (mysqli_num_rows($yorumlar) > 0) {
                 echo "<h1>Yorumlarım</h1>";
                 echo "<table style='width:100%'>";
                 echo "<tr><th style='border:2px solid black;'>Yazı Başlığı</th><th style='border:2px solid black;'>Yorum</th><th style='border:2px solid black;'>Yorum Tarihi</th><th style='border:2px solid black;'>İşlemler</th></tr>";
                 while ($yorum = mysqli_fetch_assoc($yorumlar)) {
-                    $yazi = mysqli_fetch_assoc(mysqli_query($baglanti, "SELECT * FROM yazi WHERE id='" . $yorum["yaziid"] . "'"));
-                    echo "<tr ><td class='wordfix' style='border: 2px solid aqua;'><a href='yazi.php?id=" . $yazi["id"] . "'>" . $yazi["baslik"] . "</a></td><td class='wordfix' style='border: 2px solid aqua;'>" . $yorum["metin"] . "</td><td style='border: 2px solid aqua;'>" . $yorum["tarih"] . "</td><td style='border: 2px solid aqua;'><a style='color:red;' href='yorumsil.php?id=" . $yorum["id"] . "'>Sil</td></tr>";
+                    $yazi = mysqli_fetch_assoc(mysqli_query($baglanti, "SELECT * FROM post WHERE id='" . $yorum["postid"] . "'"));
+                    echo "<tr ><td class='wordfix' style='border: 2px solid aqua;'><a href='yazi.php?id=" . $yazi["id"] . "'>" . $yazi["title"] . "</a></td><td class='wordfix' style='border: 2px solid aqua;'>" . $yorum["text"] . "</td><td style='border: 2px solid aqua;'>" . $yorum["date"] . "</td><td style='border: 2px solid aqua;'><a style='color:red;' href='yorumsil.php?id=" . $yorum["id"] . "'>Sil</td></tr>";
                 }
             } else {
                 echo "Hiç yorum yapmamışsınız.";
