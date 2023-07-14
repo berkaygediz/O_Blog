@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş Yap | O Blog</title>
     <?php
-    include("baglanti.php");
+    include("connect.php");
     ?>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
     <style>
@@ -139,15 +139,15 @@
             if (isset($_POST["eposta"]) && isset($_POST["sifre"])) {
                 $eposta = $_POST["eposta"];
                 $sifre = $_POST["sifre"];
-                $varmi = mysqli_query($baglanti, "SELECT * FROM Yazar WHERE eposta='$eposta' AND sifre='$sifre'");
+                $varmi = mysqli_query($baglanti, "SELECT * FROM author WHERE email='$eposta' AND password='$sifre'");
                 $bilgi = mysqli_fetch_assoc($varmi);
 
-                if (mysqli_num_rows($varmi) > 0 && $bilgi["eposta"] == $eposta && $bilgi["sifre"] == $sifre) {
+                if (mysqli_num_rows($varmi) > 0 && $bilgi["email"] == $eposta && $bilgi["password"] == $sifre) {
                     $_SESSION["girisyapildi"] = true;
                     $_SESSION["kullaniciid"] = $bilgi["id"];
-                    $_SESSION["eposta"] = $bilgi["eposta"];
-                    $_SESSION["sifre"] = $bilgi["sifre"];
-                    $_SESSION["kullaniciadi"] = $bilgi["kullaniciadi"];
+                    $_SESSION["eposta"] = $bilgi["email"];
+                    $_SESSION["sifre"] = $bilgi["password"];
+                    $_SESSION["kullaniciadi"] = $bilgi["username"];
                     mysqli_close($baglanti);
 
                     header('Location: index.php');

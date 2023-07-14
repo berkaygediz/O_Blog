@@ -9,7 +9,7 @@
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
     <?php
     session_start();
-    include("baglanti.php");
+    include("connect.php");
     ?>
     <style>
         body {
@@ -128,13 +128,8 @@
             </a>
         </div>
         <div style="display: flex; align-items: center; width:50%;">
-            <?php
-            if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-                echo "<div style='margin-left:10vh;margin-right:2vh;justify-content: space-between;'><a href='index.php' class='nav-eleman-kontrol'>Keşfet</a><a href='yazarlar.php' class='nav-eleman-kontrol'>Yazarlar</a><a href='yazilarim.php' class='nav-eleman-kontrol'>Yazılarım</a> <a href='yorumlarim.php' class='nav-eleman-kontrol'>Yorumlarım</a></div>";
-                echo "| <div style='margin-left:2vh;'> Hoşgeldiniz, <a href='profil.php?kullaniciadi=" . $_SESSION["kullaniciadi"] . "'>" . $_SESSION["kullaniciadi"] . "</a><a href='cikis.php' class='nav-eleman-kontrol'>Çıkış</a>";
-            } else {
-                echo "<div style='margin-left:40vh;margin-right:2vh;justify-content: space-between;'><a href='giris.php' class='nav-eleman-kontrol'>Giriş Yap</a> | <a href='kayit.php' class='nav-eleman-kontrol'>Kayıt Ol</a></div>";
-            }
+            <<?php
+            include("nav.php");
             ?>
         </div>
     </header>
@@ -144,13 +139,13 @@
             $kullaniciid = $_SESSION["kullaniciid"];
             $yaziid = $_GET['yaziid'];
             echo "<h1>Yazını Düzenle</h1>";
-            $yazisor = mysqli_query($baglanti, "SELECT * FROM yazi WHERE id='$yaziid'");
+            $yazisor = mysqli_query($baglanti, "SELECT * FROM post WHERE id='$yaziid'");
             $yazicek = mysqli_fetch_assoc($yazisor);
             if ($yazicek["id"] == $_GET["yaziid"]) {
 
                 echo "<form action='yaziduzenleaction.php?yaziid=" . $yaziid . "' method='POST'>
-            <input type='text' name='baslik' value='" . $yazicek["baslik"] . "' placeholder='Başlık' style='width: 60%; padding: 1vh 1vh 1vh 1vh; border-radius: 2em; border: 1px solid white; background: linear-gradient(45deg, #F9FBE7, #F0EDD4, #ECCDB4); font-weight: bold; font-size: 2em;font-family: Arial, Helvetica, sans-serif;' maxlength='100' required><br><br>
-            <textarea name='metin' placeholder='İçerik' style='width: 70%; height: 50vh; padding: 1vh 1vh 1vh 1vh; border-radius: 2em; border: 1px solid white; background-color: #F0EDD4; color: black; font-weight: bold; font-family: Arial, Helvetica, sans-serif;' maxlength='3500' required>" . $yazicek["metin"] . "</textarea><br><br>
+            <input type='text' name='baslik' value='" . $yazicek["title"] . "' placeholder='Başlık' style='width: 60%; padding: 1vh 1vh 1vh 1vh; border-radius: 2em; border: 1px solid white; background: linear-gradient(45deg, #F9FBE7, #F0EDD4, #ECCDB4); font-weight: bold; font-size: 2em;font-family: Arial, Helvetica, sans-serif;' maxlength='100' required><br><br>
+            <textarea name='metin' placeholder='İçerik' style='width: 70%; height: 50vh; padding: 1vh 1vh 1vh 1vh; border-radius: 2em; border: 1px solid white; background-color: #F0EDD4; color: black; font-weight: bold; font-family: Arial, Helvetica, sans-serif;' maxlength='3500' required>" . $yazicek["text"] . "</textarea><br><br>
             <input type='submit' id='olustur' value='Yazıyı Düzenle'>";
             }
         } else {

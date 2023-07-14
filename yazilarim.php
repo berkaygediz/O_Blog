@@ -8,7 +8,7 @@
     <title>Yazılarım | O Blog</title>
     <?php
     session_start();
-    include("baglanti.php");
+    include("connect.php");
     ?>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
     <style>
@@ -118,25 +118,20 @@
         </div>
         <div style="display: flex; align-items: center; width:50%;">
             <?php
-            if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-                echo "<div style='margin-left:10vh;margin-right:2vh;justify-content: space-between;'><a href='index.php' class='nav-eleman-kontrol'>Keşfet</a><a href='yazarlar.php' class='nav-eleman-kontrol'>Yazarlar</a><a href='yazilarim.php' class='nav-eleman-kontrol'>Yazılarım</a> <a href='yorumlarim.php' class='nav-eleman-kontrol'>Yorumlarım</a></div>";
-                echo "| <div style='margin-left:2vh;'> Hoşgeldiniz, <a href='profil.php?kullaniciadi=" . $_SESSION["kullaniciadi"] . "'>" . $_SESSION["kullaniciadi"] . "</a><a href='cikis.php' class='nav-eleman-kontrol'>Çıkış</a>";
-            } else {
-                echo "<div style='margin-left:40vh;margin-right:2vh;justify-content: space-between;'><a href='giris.php' class='nav-eleman-kontrol'>Giriş Yap</a> | <a href='kayit.php' class='nav-eleman-kontrol'>Kayıt Ol</a></div>";
-            }
+            include("nav.php");
             ?>
         </div>
     </header>
     <main>
         <?php
         if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-            $yazilar = mysqli_query($baglanti, "SELECT * FROM yazi WHERE yazarid='" . $_SESSION["kullaniciid"] . "' ORDER BY tarih DESC");
+            $yazilar = mysqli_query($baglanti, "SELECT * FROM post WHERE authorid='" . $_SESSION["kullaniciid"] . "' ORDER BY date DESC");
             if (mysqli_num_rows($yazilar) > 0) {
                 echo "<h1>Yazılarım</h1>";
                 echo "<table style='width:100%;'>";
                 echo "<tr><th style='border:2px solid black;'>Başlık</th><th style='border:2px solid black;'>Tarih</th><th style='border:2px solid black;'>İşlemler</th></tr>";
                 while ($yazi = mysqli_fetch_assoc($yazilar)) {
-                    echo "<tr><td style='border: 2px solid aqua;'><a href='yazi.php?id=" . $yazi["id"] . "'>" . substr($yazi["baslik"], 0, 50) . "</a></td><td style='border: 2px solid aqua;'>" . $yazi["tarih"] . "</td><td style='border: 2px solid aqua;'><a href='yaziduzenle.php?yaziid=" . $yazi["id"] . "'>Düzenle</a> | <a href='yazisil.php?yaziid=" . $yazi["id"] . "'>Sil</a></td></tr>";
+                    echo "<tr><td style='border: 2px solid aqua;'><a href='yazi.php?id=" . $yazi["id"] . "'>" . substr($yazi["title"], 0, 50) . "</a></td><td style='border: 2px solid aqua;'>" . $yazi["date"] . "</td><td style='border: 2px solid aqua;'><a href='yaziduzenle.php?yaziid=" . $yazi["id"] . "'>Düzenle</a> | <a href='yazisil.php?yaziid=" . $yazi["id"] . "'>Sil</a></td></tr>";
                 }
                 echo "</table>";
             } else {

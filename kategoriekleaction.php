@@ -1,14 +1,14 @@
 <?php
 session_start();
-include("baglanti.php");
+include("connect.php");
 
 if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
     $kullaniciid = $_SESSION["kullaniciid"];
     $kategoriadi = $_POST['kategoriadi'];
-    $kategorisor = mysqli_query($baglanti, "SELECT * FROM kategori WHERE kategori='$kategoriadi'");
+    $kategorisor = mysqli_query($baglanti, "SELECT * FROM category WHERE category='$kategoriadi'");
     $kategoricek = mysqli_fetch_assoc($kategorisor);
     if ($kategoricek["kategori"] != $kategoriadi) {
-        $kategoriekle = mysqli_query($baglanti, "INSERT INTO kategori (kategori) VALUES ('$kategoriadi')");
+        $kategoriekle = mysqli_query($baglanti, "INSERT INTO category (category) VALUES ('$kategoriadi')");
         if ($kategoriekle) {
             header("Location: admin.php");
         } else {

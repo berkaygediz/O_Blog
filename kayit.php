@@ -126,7 +126,6 @@
     <main>
         <?php
         session_start();
-
         if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
             header('Location: index.php');
             exit;

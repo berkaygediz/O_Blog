@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php
     session_start();
-    include("baglanti.php");
+    include("connect.php");
     ?>
     <title>
         <?php
-        $yaziverisi = mysqli_query($baglanti, "SELECT * FROM yazi WHERE id = " . $_GET["id"]);
+        $yaziverisi = mysqli_query($baglanti, "SELECT * FROM post WHERE id = " . $_GET["id"]);
         $yaziverisi = mysqli_fetch_assoc($yaziverisi);
-        echo substr($yaziverisi["baslik"], 0, 30) . "...";
+        echo substr($yaziverisi["title"], 0, 30) . "...";
         ?> | O Blog
     </title>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
@@ -236,13 +236,7 @@
         </div>
         <div style="display: flex; align-items: center; width:50%;">
             <?php
-
-            if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-                echo "<div style='margin-left:10vh;margin-right:2vh;justify-content: space-between;'><a href='index.php' class='nav-eleman-kontrol'>Keşfet</a><a href='yazarlar.php' class='nav-eleman-kontrol'>Yazarlar</a><a href='yazilarim.php' class='nav-eleman-kontrol'>Yazılarım</a> <a href='yorumlarim.php' class='nav-eleman-kontrol'>Yorumlarım</a></div>";
-                echo "| <div style='margin-left:2vh;'> Hoşgeldiniz, <a href='profil.php?kullaniciadi=" . $_SESSION["kullaniciadi"] . "'>" . $_SESSION["kullaniciadi"] . "</a><a href='cikis.php' class='nav-eleman-kontrol'>Çıkış</a>";
-            } else {
-                echo "<div style='margin-left:40vh;margin-right:2vh;justify-content: space-between;'><a href='giris.php' class='nav-eleman-kontrol'>Giriş Yap</a> | <a href='kayit.php' class='nav-eleman-kontrol'>Kayıt Ol</a></div>";
-            }
+            include("nav.php");
             ?>
         </div>
     </header>
@@ -250,10 +244,10 @@
         <div id="yazi">
             <div id="baslik">
                 <?php
-                $yaziverisi = mysqli_query($baglanti, "SELECT * FROM yazi WHERE id = " . $_GET["id"]);
+                $yaziverisi = mysqli_query($baglanti, "SELECT * FROM post WHERE id = " . $_GET["id"]);
                 $yaziverisial = mysqli_fetch_assoc($yaziverisi);
                 if (mysqli_num_rows($yaziverisi) > 0) {
-                    echo $yaziverisial["baslik"];
+                    echo $yaziverisial["title"];
                 } else {
                     echo "Başlık bulunamadı.";
                 }
@@ -262,7 +256,7 @@
             <div id="metin">
                 <?php
                 if (mysqli_num_rows($yaziverisi) > 0) {
-                    echo $yaziverisial["metin"];
+                    echo $yaziverisial["text"];
                 } else {
                     echo "Yazı bulunamadı.";
                 }
@@ -271,10 +265,10 @@
             <div id="yazidetay">
                 <div style="font-weight:bolder; font-size: 1.15rem;">👤Yazar:</div>
                 <?php
-                $yaziyazar = mysqli_query($baglanti, "SELECT * FROM yazi INNER JOIN yazar ON yazi.yazarid = yazar.id WHERE yazi.id = " . $_GET["id"]);
+                $yaziyazar = mysqli_query($baglanti, "SELECT * FROM post INNER JOIN author ON post.authorid = author.id WHERE post.id = " . $_GET["id"]);
                 $yaziyazarverisi = mysqli_fetch_assoc($yaziyazar);
                 if (mysqli_num_rows($yaziyazar) > 0) {
-                    echo "<a href='profil.php?kullaniciadi=" . $yaziyazarverisi["kullaniciadi"] . "'><div class='channel-item'>" . $yaziyazarverisi["kullaniciadi"] . "</div></a>";
+                    echo "<a href='profil.php?kullaniciadi=" . $yaziyazarverisi["username"] . "'><div class='channel-item'>" . $yaziyazarverisi["username"] . "</div></a>";
                 } else {
                     echo "<div class='channel-item'>Yazar yüklenemedi.</div>";
                 }
@@ -282,11 +276,11 @@
                 <div style="clear:both; padding-top: 1%;"></div>
                 <div style="font-weight:bolder; font-size: 1.15rem;">🔍Kategori:</div>
                 <?php
-                $yazikategori = mysqli_query($baglanti, "SELECT * FROM yazi INNER JOIN kategori ON yazi.kategoriid = kategori.id WHERE yazi.id = " . $_GET["id"]);
+                $yazikategori = mysqli_query($baglanti, "SELECT * FROM post INNER JOIN category ON post.categoryid = category.id WHERE post.id = " . $_GET["id"]);
                 $kategoriverisi = mysqli_fetch_assoc($yazikategori);
 
                 if (mysqli_num_rows($yazikategori) > 0) {
-                    echo "<div class='category-item'>" . $kategoriverisi["kategori"] . "</div></a>";
+                    echo "<div class='category-item'>" . $kategoriverisi["category"] . "</div></a>";
                 } else {
                     echo "<div class='category-item'>Kategori yüklenemedi.</div>";
                 }
@@ -296,7 +290,7 @@
                 <div class="tarih">
                     <?php
                     if (mysqli_num_rows($yaziverisi) > 0) {
-                        echo $yaziverisial["tarih"];
+                        echo $yaziverisial["date"];
                     } else {
                         echo "Tarih yüklenemedi.";
                     }
@@ -306,13 +300,13 @@
             <?php
             if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
 
-                $yorumlar = mysqli_query($baglanti, "SELECT * FROM yorum INNER JOIN yazar ON yorum.yazarid = yazar.id WHERE yorum.yaziid = " . $_GET["id"] . " ORDER BY yorum.id DESC");
+                $yorumlar = mysqli_query($baglanti, "SELECT * FROM comment INNER JOIN author ON comment.authorid = author.id WHERE comment.postid = " . $_GET["id"] . " ORDER BY comment.id DESC");
                 $yorumlariverisi = mysqli_fetch_assoc($yorumlar);
 
                 if (mysqli_num_rows($yorumlar)) {
                     echo "<div class='context' style='margin-top: 2%;'>Yorumlar (" . mysqli_num_rows($yorumlar) . ") </div>";
                     do {
-                        echo "<div class='yorum'><div class='yorumyazan'><a href='profil.php?kullaniciadi=" . $yorumlariverisi["kullaniciadi"] . "'>" . $yorumlariverisi["kullaniciadi"] . "</a></div><div style='word-wrap: break-word;'>" . $yorumlariverisi["metin"] . "</div></div>" . $yorumlariverisi["tarih"] . "<hr>";
+                        echo "<div class='yorum'><div class='yorumyazan'><a href='profil.php?kullaniciadi=" . $yorumlariverisi["username"] . "'>" . $yorumlariverisi["username"] . "</a></div><div style='word-wrap: break-word;'>" . $yorumlariverisi["text"] . "</div></div>" . $yorumlariverisi["date"] . "<hr>";
                     } while ($yorumlariverisi = mysqli_fetch_assoc($yorumlar));
                 } else {
                     echo "<div class='context' style='margin-top: 2%;'>Yorumlar</div>";
