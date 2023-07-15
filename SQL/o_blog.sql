@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Anamakine: 127.0.0.1
--- Üretim Zamanı: 14 Tem 2023, 03:56:54
--- Sunucu sürümü: 10.4.28-MariaDB
--- PHP Sürümü: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Jul 15, 2023 at 08:01 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,26 +18,26 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Veritabanı: `o_blog`
+-- Database: `o_blog`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `author`
+-- Table structure for table `author`
 --
 
 CREATE TABLE `author` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
   `isadmin` tinyint(1) NOT NULL DEFAULT 0,
   `regdate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `author`
+-- Dumping data for table `author`
 --
 
 INSERT INTO `author` (`id`, `username`, `email`, `password`, `isadmin`, `regdate`) VALUES
@@ -47,16 +47,16 @@ INSERT INTO `author` (`id`, `username`, `email`, `password`, `isadmin`, `regdate
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `category`
+-- Table structure for table `category`
 --
 
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
-  `category` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+  `category` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `category`
+-- Dumping data for table `category`
 --
 
 INSERT INTO `category` (`id`, `category`) VALUES
@@ -70,19 +70,19 @@ INSERT INTO `category` (`id`, `category`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `comment`
+-- Table structure for table `comment`
 --
 
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL,
-  `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `text` text NOT NULL,
   `postid` int(11) NOT NULL,
   `authorid` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `comment`
+-- Dumping data for table `comment`
 --
 
 INSERT INTO `comment` (`id`, `text`, `postid`, `authorid`, `date`) VALUES
@@ -95,20 +95,20 @@ INSERT INTO `comment` (`id`, `text`, `postid`, `authorid`, `date`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `post`
+-- Table structure for table `post`
 --
 
 CREATE TABLE `post` (
   `id` int(11) NOT NULL,
-  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `text` text NOT NULL,
   `authorid` int(11) NOT NULL,
   `categoryid` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `post`
+-- Dumping data for table `post`
 --
 
 INSERT INTO `post` (`id`, `title`, `text`, `authorid`, `categoryid`, `date`) VALUES
@@ -116,26 +116,26 @@ INSERT INTO `post` (`id`, `title`, `text`, `authorid`, `categoryid`, `date`) VAL
 (16, 'Amerikan Mimarisi', 'Amerika Birleşik Devletleri’nin üçüncü başkanı Thomas Jefferson yenilikçi bir mimardı ve Virginia’daki evi Monticello (1772-1809) için yaptığı tasarım, dört renkli sütunlu bir Palladyan portiko kullanarak Neoklasik tarzı örnekledi. Benjamin Henry Latrobe’un resmi binalar için tercih edilen Federal tarz olarak bilinen şeyi başlattı.\r\n\r\nNeoklasizm bağlamında 1830 civarında gelişen Beaux-Arts mimarisi, Neoklasizmin resmiyetini Rönesans, Barok ve Geç Gotik mimarisinden unsurları dahil etmek için reddetti. Amerika Birleşik Devletleri’nde, Richard Morris Hunt tarafından yönetilen Beaux-Arts tarzı, “Amerikan Rönesansı” veya “Amerikan Klasisizmi” olarak tanındı. 1890’da başlayan ve İngiliz Sanat ve El Sanatları hareketinden ve Japonizm’den etkilenen son derece etkili Art Nouveau hareketi, organik, akıcı, bitkisel motifler içeriyordu.', 14, 4, '2023-05-24 20:02:43'),
 (17, 'Fenerbahçe Nedir?', 'Fenerbahçe erkek futbol takımı, Fenerbahçe Spor Kulübü&#039;nün Süper Lig&#039;de mücadele eden profesyonel futbol takımıdır. Kulübün futbol dışında faaliyet gösterdiği diğer spor dalları basketbol, voleybol, atletizm, boks, kürek, yelken, yüzme ve masa tenisi&#039;dir.', 14, 5, '2023-05-24 20:05:15'),
 (18, 'Teknoloji Felsefesi Nedir?', 'Yirminci yüzyılda çok sayıda düşünür, teknoloji üzerine yazdı, çizdi. Martin Heidegger, Hannah Arendt, Jacques Ellul, Langdon Winner ve Lewis Mumford bu isimlerden en dikkat çekenleri olabilir. Bu düşünürler ve adını buraya sığdıramadığımız niceleri, her ne kadar farklı tarz ve gerekçelerle de olsa, teknolojiye karşı &quot;eleştirel&quot; bir bakış geliştirdiler. Bu figürlerin çoğu, gelişen teknolojinin insan yaşamına o dönemde mevcut veya olası etkileri üzerinden analizler yaptılar. Heidegger gibi isimlerin ise daha felsefi kaygıları vardı. Heidegger özelinde teknolojinin dâhil olduğu problemin kapsamı çok daha geniş ve bu yazının sınırlarını fazlasıyla aşıyor. Fakat merak edenleriniz için ilgili Stanford Felsefe Ansiklopedisi makalesini tavsiye ediyoruz.', 14, 6, '2023-05-24 20:06:24'),
-(19, 'Havalar Güzel Mi?', 'Havalar güzel mi?', 14, 1, '2023-05-24 20:07:16');
+(19, 'Havalar Güzel Mi?', 'Havalar güzel mi?', 14, 1, '2023-07-15 03:17:51');
 
 --
--- Dökümü yapılmış tablolar için indeksler
+-- Indexes for dumped tables
 --
 
 --
--- Tablo için indeksler `author`
+-- Indexes for table `author`
 --
 ALTER TABLE `author`
   ADD PRIMARY KEY (`id`);
 
 --
--- Tablo için indeksler `category`
+-- Indexes for table `category`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Tablo için indeksler `comment`
+-- Indexes for table `comment`
 --
 ALTER TABLE `comment`
   ADD PRIMARY KEY (`id`),
@@ -143,7 +143,7 @@ ALTER TABLE `comment`
   ADD KEY `authorid` (`authorid`);
 
 --
--- Tablo için indeksler `post`
+-- Indexes for table `post`
 --
 ALTER TABLE `post`
   ADD PRIMARY KEY (`id`),
@@ -151,46 +151,46 @@ ALTER TABLE `post`
   ADD KEY `categoryid` (`categoryid`);
 
 --
--- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- Tablo için AUTO_INCREMENT değeri `author`
+-- AUTO_INCREMENT for table `author`
 --
 ALTER TABLE `author`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- Tablo için AUTO_INCREMENT değeri `category`
+-- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Tablo için AUTO_INCREMENT değeri `comment`
+-- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
--- Tablo için AUTO_INCREMENT değeri `post`
+-- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- Dökümü yapılmış tablolar için kısıtlamalar
+-- Constraints for dumped tables
 --
 
 --
--- Tablo kısıtlamaları `comment`
+-- Constraints for table `comment`
 --
 ALTER TABLE `comment`
   ADD CONSTRAINT `FK_CommentAuthor` FOREIGN KEY (`authorid`) REFERENCES `author` (`id`),
   ADD CONSTRAINT `FK_CommentPost` FOREIGN KEY (`postid`) REFERENCES `post` (`id`);
 
 --
--- Tablo kısıtlamaları `post`
+-- Constraints for table `post`
 --
 ALTER TABLE `post`
   ADD CONSTRAINT `FK_PostAuthor` FOREIGN KEY (`authorid`) REFERENCES `author` (`id`),
