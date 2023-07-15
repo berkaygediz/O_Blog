@@ -1,12 +1,16 @@
 <?php
 $host = "localhost";
-$kadi = "root";
-$veritabani = "o_blog";
-$baglanti = mysqli_connect($host, $kadi);
-if ($baglanti == true) {
-} else {
-    echo mysqli_error($baglanti);
+$uname = "root";
+$db = "o_blog";
+$checkdb = mysqli_connect($host, $uname);
+
+if (!$checkdb) {
+    echo mysqli_connect_error();
+    exit();
 }
 
-@mysqli_select_db($baglanti, $veritabani) or die("Veri tabanına bağlanamadık.");
+if (!mysqli_select_db($checkdb, $db)) {
+    echo mysqli_error($checkdb);
+    exit();
+}
 ?>

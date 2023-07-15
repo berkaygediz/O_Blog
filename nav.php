@@ -1,8 +1,17 @@
 <?php
-if (isset($_SESSION["girisyapildi"]) && ($_SESSION["girisyapildi"] == true)) {
-    echo "<div style='margin-left:10vh;margin-right:2vh;justify-content: space-between;'><a href='index.php' class='nav-eleman-kontrol'>Keşfet</a><a href='yazarlar.php' class='nav-eleman-kontrol'>Yazarlar</a><a href='yazilarim.php' class='nav-eleman-kontrol'>Yazılarım</a> <a href='yorumlarim.php' class='nav-eleman-kontrol'>Yorumlarım</a></div>";
-    echo "| <div style='margin-left:2vh;'> Hoşgeldiniz, <a href='profil.php?kullaniciadi=" . $_SESSION["kullaniciadi"] . "'>" . $_SESSION["kullaniciadi"] . "</a><a href='cikis.php' class='nav-eleman-kontrol'>Çıkış</a>";
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
+    echo "<div class='nav-container'>";
+    echo "<a href='index.php' class='nav-element'>Explore</a>";
+    echo "<a href='authors.php' class='nav-element'>Authors</a>";
+    echo "<a href='my-posts.php' class='nav-element'>My Posts</a>";
+    echo "<a href='my-comments.php' class='nav-element'>My Comments</a>";
+    echo "<img><a class='nav-element'href='profile.php?username=" . $_SESSION["username"] . "'>" . $_SESSION["username"] . "</a></div>";
+    echo "<a href='logout.php' class='nav-element'>Logout</a>";
+    echo "</div>";
 } else {
-    echo "<div style='margin-left:45vh;margin-right:2vh;justify-content: space-between;'><a href='giris.php' class='nav-eleman-kontrol'>Giriş Yap</a> | <a href='kayit.php' class='nav-eleman-kontrol'>Kayıt Ol</a></div>";
+    echo "<div class='nav-container'>";
+    echo "<a href='login.php' class='nav-element'>Log In</a>";
+    echo "<a href='register.php' class='nav-element'>Sign Up</a>";
+    echo "</div>";
 }
 ?>
