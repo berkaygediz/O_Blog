@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php
     session_start();
-    include("connect.php");
+    include __DIR__ . "/includes/connect.php";
     ?>
     <title>
         <?php
@@ -30,7 +30,7 @@
         ?> | O Blog
     </title>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
@@ -42,7 +42,7 @@
             </a>
         </div>
         <?php
-        include("nav.php");
+        include __DIR__ . "/includes/nav.php";
         ?>
     </header>
     <main>
@@ -157,7 +157,7 @@
         ?>
     </main>
     <?php
-    include("footer.php");
+    include __DIR__ . "/includes/footer.php";
     ?>
 </body>
 

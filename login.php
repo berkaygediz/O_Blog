@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | O Blog</title>
     <?php
-    include("connect.php");
+    include __DIR__ . "/includes/connect.php";
     session_start();
     ?>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
@@ -115,7 +115,7 @@
         </form>
     </main>
     <?php
-    include("footer.php");
+    include __DIR__ . "/includes/footer.php";
     ?>
 </body>
 

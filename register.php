@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | O Blog</title>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
@@ -29,7 +29,7 @@
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            include("connect.php");
+            include __DIR__ . "/includes/connect.php";
 
             $username = $_POST["username"];
             $email = $_POST["email"];
@@ -112,7 +112,7 @@
         </form>
     </main>
     <?php
-    include("footer.php");
+    include __DIR__ . "/includes/footer.php";
     ?>
 </body>
 

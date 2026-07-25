@@ -8,10 +8,10 @@
     <title>My Posts | O Blog</title>
     <?php
     session_start();
-    include("connect.php");
+    include __DIR__ . "/includes/connect.php";
     ?>
     <link rel="icon" type="image/x-icon" href="img/o_favicon.png">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
     </style>
 </head>
@@ -25,7 +25,7 @@
             </a>
         </div>
         <?php
-        include("nav.php");
+        include __DIR__ . "/includes/nav.php";
         ?>
     </header>
     <main>
@@ -74,7 +74,7 @@
         ?>
     </main>
     <?php
-    include("footer.php");
+    include __DIR__ . "/includes/footer.php";
     ?>
 </body>
 
